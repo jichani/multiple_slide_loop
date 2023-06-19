@@ -1,5 +1,5 @@
 let slides = document.querySelector('.slides'),
-    slide = document.querySelectorAll('.slides li'),
+    slide = document.querySelectorAll('.slides div'),
     currentIdx = 0,
     slideCount = slide.length,
     slideWidth = 200,
@@ -36,7 +36,7 @@ function makeClone() {
 }
 
 function updateWidth() {
-    let currentSlides = document.querySelectorAll('.slides li');
+    let currentSlides = document.querySelectorAll('.slides div');
     let newSlideCount = currentSlides.length;
 
     let newWidth = (slideWidth + slideMargin) * newSlideCount - slideMargin + 'px';
