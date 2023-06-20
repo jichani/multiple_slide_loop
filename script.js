@@ -2,8 +2,8 @@ let slides = document.querySelector('.slides'),
     slide = document.querySelectorAll('.slides div'),
     currentIdx = 0,
     slideCount = slide.length,
-    slideWidth = 200,
-    slideMargin = 30,
+    slideWidth = 10.4166,
+    slideMargin = 1.5625,
     prevBtn = document.querySelector('.prev'),
     nextBtn = document.querySelector('.next');
 
@@ -39,14 +39,14 @@ function updateWidth() {
     let currentSlides = document.querySelectorAll('.slides div');
     let newSlideCount = currentSlides.length;
 
-    let newWidth = (slideWidth + slideMargin) * newSlideCount - slideMargin + 'px';
+    let newWidth = (slideWidth + slideMargin) * newSlideCount - slideMargin + 'vw';
     slides.style.width = newWidth;
 }
 
 function setInitialPosition() {
     let initialTranslateValue = -(slideWidth + slideMargin) * slideCount;
     // slides { transform:translateX(-1000px);}
-    slides.style.transform = `translateX(${initialTranslateValue}px)`
+    slides.style.transform = `translateX(${initialTranslateValue}vw)`
 }
 
 nextBtn.addEventListener('click', function () {
@@ -57,9 +57,9 @@ prevBtn.addEventListener('click', function () {
 })
 
 function moveSlide(num) {
-    slides.style.left = -num * (slideWidth + slideMargin) + 'px';
+    slides.style.left = -num * (slideWidth + slideMargin) + 'vw';
     currentIdx = num;
-    console.log(currentIdx, slideCount);
+    // console.log(currentIdx, slideCount);
 
     if (currentIdx == slideCount || currentIdx == - slideCount) {
         setTimeout(function () {
@@ -72,3 +72,47 @@ function moveSlide(num) {
         }, 600)
     }
 }
+
+// 무한 반복 (loop)
+// clearInterval(timer);
+
+var timer = undefined;
+
+function autoSlide() {
+    if (timer == undefined) {
+        timer = setInterval(function () {
+            moveSlide(currentIdx + 1);
+            // 여기에 집어넣기
+            let inner = document.querySelector(".inner img");
+            // console.log(currentIdx);
+            // 바껴야 하는 값은 div가 2부터 시작이므로 1을 더해주어야 한다.
+            let currentImg = document.querySelector(`.slides div:nth-child(${currentIdx + 1}) img`)
+
+            // console.dir(currentImg);
+            inner.src = `./img/${currentImg.alt}.jpg`;
+
+        }, 3000);
+    }
+}
+
+autoSlide();
+
+function stopSlide() {
+    clearInterval(timer);
+
+    timer = undefined;
+    //   console.log(timer);
+}
+slides.addEventListener("mouseenter", function () {
+    stopSlide();
+});
+slides.addEventListener("mouseleave", function () {
+    autoSlide();
+});
+
+// 반응형 슬라이드
+// window.addEventListener('resize', function () {
+//     let currentWidth = document.querySelector('body').offsetWidth;
+//     console.log(currentWidth);
+
+// })
